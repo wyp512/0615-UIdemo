@@ -7,13 +7,15 @@ interface ThinkingContentProps {
   messages: Message[];
   formatTime: (date: Date) => string;
   mockThinkingSteps: string[];
+  selectedCodeBlock: string | null;
 }
 
 const ThinkingContent: React.FC<ThinkingContentProps> = ({
   currentThinking,
   messages,
   formatTime,
-  mockThinkingSteps
+  mockThinkingSteps,
+  selectedCodeBlock
 }) => {
   const [isExecExpanded, setIsExecExpanded] = useState<boolean>(true);
 
@@ -44,8 +46,15 @@ const ThinkingContent: React.FC<ThinkingContentProps> = ({
     timestamp: new Date()
   };
 
+  // 根据selectedCodeBlock确定要显示的内容类型
+  const getSelectedContentType = () => {
+    if (selectedCodeBlock === 'scene') return 'scene';
+    if (selectedCodeBlock === 'consumer') return 'consumer';
+    return 'default';
+  };
+
   return (
-    <div className="flex-1 overflow-y-auto bg-gray-50 font-mono text-sm">
+    <div className="flex-1 overflow-y-auto bg-gray-50 font-mono text-sm rounded-b-2xl">
       {currentThinking.length > 0 ? (
         <div className="p-4 space-y-2">
           <div className="text-blue-600 font-semibold">▶ exec requestInteraction</div>
@@ -54,6 +63,29 @@ const ThinkingContent: React.FC<ThinkingContentProps> = ({
               {step}
             </div>
           ))}
+        </div>
+      ) : selectedCodeBlock ? (
+        <div className="p-4 space-y-2">
+          {/* 显示选中的代码执行块 */}
+          <div 
+            className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded"
+            onClick={toggleExecSection}
+          >
+            <span className="text-gray-500 text-xs">
+              {isExecExpanded ? '⯆' : '⯈'}
+            </span>
+            <span className="text-blue-600 font-semibold">exec requestInteraction</span>
+          </div>
+
+          {isExecExpanded && (
+            <CodeExecutionBlock
+              message={exampleMessage}
+              userMessage={exampleUserMessage}
+              formatTime={formatTime}
+              variant="console"
+              contentType={getSelectedContentType()}
+            />
+          )}
         </div>
       ) : latestAssistantMessage ? (
         <div className="p-4 space-y-2">

@@ -1,19 +1,22 @@
 import React from 'react';
 import type { Message } from '../types';
 import CodeExecutionBlock from './CodeExecutionBlock';
+import OptionTabs from './OptionTabs';
 
 interface MessageListProps {
   messages: Message[];
   isTyping: boolean;
   formatTime: (date: Date) => string;
   messagesEndRef: React.RefObject<HTMLDivElement>;
+  onCodeBlockView: (blockType: string) => void;
 }
 
 const MessageList: React.FC<MessageListProps> = ({
   messages,
   isTyping,
   formatTime,
-  messagesEndRef
+  messagesEndRef,
+  onCodeBlockView
 }) => {
   // 模拟的咖啡研发对话内容
   const mockMessages = [
@@ -57,12 +60,45 @@ const MessageList: React.FC<MessageListProps> = ({
         userMessage={mockMessages[0]}
         formatTime={formatTime}
         variant="chat"
+        contentType="scene"
+        onCodeBlockView={onCodeBlockView}
+        blockId="scene"
+      />
+      
+      {/* 添加咖啡消费场景选项卡 */}
+      <OptionTabs
+        title="你希望这款咖啡主要在什么场景下被消费？"
+        options={[
+          "办公室快速冲泡",
+          "家庭休闲享用", 
+          "户外/旅行便携",
+          "社交场合分享"
+        ]}
+        onOptionSelect={(option) => {
+          console.log('选择了场景:', option);
+        }}
+      />
+      
+      {/* 添加新的文字段落 */}
+      <div className="text-gray-800 text-sm leading-relaxed mb-4">
+        谢谢您的回答！了解到这款冻干咖啡主要面向办公室快速冲泡、户外/旅行便携以及家庭休闲享用场景。让我再了解一下关于目标消费者的信息：
+      </div>
+      
+      {/* 在指定文字下方添加代码执行块 */}
+      <CodeExecutionBlock
+        message={mockAssistantMessage}
+        userMessage={mockMessages[0]}
+        formatTime={formatTime}
+        variant="chat"
+        contentType="consumer"
+        onCodeBlockView={onCodeBlockView}
+        blockId="consumer"
       />
     </div>
   );
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+    <div className="flex-1 overflow-y-auto p-4 bg-white">
       {/* 渲染模拟消息 */}
       {mockMessages.map((message) => (
         <div key={message.id}>
@@ -90,6 +126,8 @@ const MessageList: React.FC<MessageListProps> = ({
                 userMessage={messages.find(m => m.type === 'user' && m.id < message.id)}
                 formatTime={formatTime}
                 variant="chat"
+                onCodeBlockView={onCodeBlockView}
+                blockId={`dynamic-${message.id}`}
               />
             </div>
           )}

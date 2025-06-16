@@ -13,6 +13,7 @@ interface ChatAreaProps {
   handleKeyPress: (e: React.KeyboardEvent) => void;
   formatTime: (date: Date) => string;
   messagesEndRef: React.RefObject<HTMLDivElement>;
+  onCodeBlockView: (blockType: string) => void;
 }
 
 const ChatArea: React.FC<ChatAreaProps> = ({
@@ -23,7 +24,8 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   handleSendMessage,
   handleKeyPress,
   formatTime,
-  messagesEndRef
+  messagesEndRef,
+  onCodeBlockView
 }) => {
   return (
     <div className="flex-1 flex flex-col bg-white">
@@ -34,6 +36,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
         isTyping={isTyping}
         formatTime={formatTime}
         messagesEndRef={messagesEndRef}
+        onCodeBlockView={onCodeBlockView}
       />
       
       <ChatInput

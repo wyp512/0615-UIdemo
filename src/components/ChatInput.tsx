@@ -16,15 +16,15 @@ const ChatInput: React.FC<ChatInputProps> = ({
   isTyping
 }) => {
   return (
-    <div className="bg-white border-t border-gray-200 p-6">
-      <div className="flex items-end space-x-4">
-        <div className="flex-1">
+    <div className="bg-white border-t border-gray-200 p-4">
+      <div className="flex items-center space-x-3">
+        <div className="flex-1 relative">
           <textarea
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
-            placeholder="输入您的问题..."
-            className="w-full resize-none border-2 border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-200"
+            placeholder="提出后续问题或回复"
+            className="w-full resize-none border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 transition-all duration-200 bg-white"
             rows={1}
             style={{ minHeight: '48px', maxHeight: '120px' }}
           />
@@ -32,9 +32,21 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <button
           onClick={handleSendMessage}
           disabled={!inputValue.trim() || isTyping}
-          className="bg-gray-800 hover:bg-gray-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg disabled:transform-none disabled:shadow-none font-medium"
+          className="flex items-center justify-center w-10 h-10 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-300 text-white rounded-lg transition-all duration-200 disabled:cursor-not-allowed"
         >
-          发送
+          <svg 
+            className="w-5 h-5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" 
+            />
+          </svg>
         </button>
       </div>
     </div>

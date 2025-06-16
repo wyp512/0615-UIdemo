@@ -6,37 +6,64 @@ interface CodeExecutionBlockProps {
   userMessage?: Message;
   formatTime: (date: Date) => string;
   variant?: 'chat' | 'console';
+  contentType?: 'scene' | 'consumer' | 'default';
+  onCodeBlockView?: (blockType: string) => void;
+  blockId?: string;
 }
 
 const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
   message,
   userMessage,
   formatTime,
-  variant = 'chat'
+  variant = 'chat',
+  contentType = 'default',
+  onCodeBlockView,
+  blockId
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  // 根据用户问题生成相关的选项
-  const generateOptionsBasedOnQuestion = (question: string) => {
-    if (question.includes('React') || question.includes('useState')) {
-      return ["基础语法解释", "实际代码示例", "最佳实践指导", "常见问题解答"];
-    } else if (question.includes('咖啡')) {
-      return ["办公室快速冲泡", "家庭休闲享用", "户外/旅行便携", "社交场合分享"];
+  // 根据内容类型生成不同的执行数据
+  const getExecutionData = () => {
+    if (contentType === 'consumer') {
+      return {
+        question: '您的目标消费者主要是哪类人群？',
+        options: ["追求新鲜风味的尝鲜一族", "注重健康但不想放弃品质的消费者", "忙碌白领寻找高效能量来源", "喜欢尝试独特风味的咖啡爱好者"],
+        answer: ["追求新鲜风味的尝鲜一族", "忙碌白领寻找高效能量来源", "喜欢尝试独特风味的咖啡爱好者"],
+        message: ["追求新鲜风味的尝鲜一族", "忙碌白领寻找高效能量来源", "喜欢尝试独特风味的咖啡爱好者"]
+      };
+    } else if (contentType === 'scene') {
+      return {
+        question: '您希望这款冻干咖啡主要在什么场景下被消费？',
+        options: ["办公室快速冲泡", "家庭休闲享用", "户外/旅行便携", "社交场合分享"],
+        answer: ["办公室快速冲泡", "户外/旅行便携", "家庭休闲享用"],
+        message: ["办公室快速冲泡", "户外/旅行便携", "家庭休闲享用"]
+      };
     } else {
-      return ["详细解释说明", "提供具体示例", "相关知识扩展", "实用建议指导"];
+      // 默认根据用户问题生成选项
+      const generateOptionsBasedOnQuestion = (question: string) => {
+        if (question.includes('React') || question.includes('useState')) {
+          return ["基础语法解释", "实际代码示例", "最佳实践指导", "常见问题解答"];
+        } else if (question.includes('咖啡')) {
+          return ["办公室快速冲泡", "家庭休闲享用", "户外/旅行便携", "社交场合分享"];
+        } else {
+          return ["详细解释说明", "提供具体示例", "相关知识扩展", "实用建议指导"];
+        }
+      };
+      
+      const userQuestion = userMessage?.content || '如何更好地理解这个问题？';
+      const options = generateOptionsBasedOnQuestion(userQuestion);
+      const selectedOptions = options.slice(0, 3);
+      
+      return {
+        question: '您希望这款冻干咖啡主要在什么场景下被消费？',
+        options: selectedOptions,
+        answer: selectedOptions,
+        message: selectedOptions
+      };
     }
   };
 
-  const userQuestion = userMessage?.content || '如何更好地理解这个问题？';
-  const options = generateOptionsBasedOnQuestion(userQuestion);
-  const selectedOptions = options.slice(0, 3);
-
-  const executionData = {
-    question: `您希望这款冻干咖啡主要在什么场景下被消费？`,
-    options: selectedOptions,
-    answer: selectedOptions,
-    message: selectedOptions
-  };
+  const executionData = getExecutionData();
 
   const toggleExpanded = () => {
     setIsExpanded(prev => !prev);
@@ -45,7 +72,18 @@ const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
   // 聊天区域样式
   if (variant === 'chat') {
     return (
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+      <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4 relative">
+        {/* 右上角的查看过程按钮 */}
+        <div 
+          className="absolute top-3 right-3 flex items-center space-x-1 text-gray-500 text-xs cursor-pointer hover:text-gray-700"
+          onClick={() => onCodeBlockView && blockId && onCodeBlockView(blockId)}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>
+          </svg>
+          <span>查看过程</span>
+        </div>
+        
         <div 
           className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded mb-2"
           onClick={toggleExpanded}

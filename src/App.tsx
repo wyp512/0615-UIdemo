@@ -29,6 +29,7 @@ const App: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [currentThinking, setCurrentThinking] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [selectedCodeBlock, setSelectedCodeBlock] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -97,8 +98,12 @@ const App: React.FC = () => {
     }
   };
 
+  const handleCodeBlockView = (blockType: string) => {
+    setSelectedCodeBlock(blockType);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white">
       <div className="h-screen flex">
         {/* 左侧聊天区域 - 占一半宽度 */}
         <ChatArea 
@@ -110,6 +115,7 @@ const App: React.FC = () => {
           handleKeyPress={handleKeyDown}
           formatTime={formatTime}
           messagesEndRef={messagesEndRef}
+          onCodeBlockView={handleCodeBlockView}
         />
 
         {/* 右侧思考过程区域 - 占一半宽度 */}
@@ -118,6 +124,7 @@ const App: React.FC = () => {
           messages={messages}
           formatTime={formatTime}
           mockThinkingSteps={mockThinkingSteps}
+          selectedCodeBlock={selectedCodeBlock}
         />
       </div>
     </div>

@@ -8,16 +8,18 @@ interface ThinkingAreaProps {
   messages: Message[];
   formatTime: (date: Date) => string;
   mockThinkingSteps: string[];
+  selectedCodeBlock: string | null;
 }
 
 const ThinkingArea: React.FC<ThinkingAreaProps> = ({
   currentThinking,
   messages,
   formatTime,
-  mockThinkingSteps
+  mockThinkingSteps,
+  selectedCodeBlock
 }) => {
   return (
-    <div className="flex-1 bg-white border border-gray-300 rounded-lg flex flex-col m-4 shadow-sm">
+    <div className="flex-1 bg-gray-50 border border-gray-300 rounded-2xl flex flex-col m-4 shadow-lg">
       <ThinkingHeader />
       
       <ThinkingContent 
@@ -25,6 +27,7 @@ const ThinkingArea: React.FC<ThinkingAreaProps> = ({
         messages={messages}
         formatTime={formatTime}
         mockThinkingSteps={mockThinkingSteps}
+        selectedCodeBlock={selectedCodeBlock}
       />
     </div>
   );
