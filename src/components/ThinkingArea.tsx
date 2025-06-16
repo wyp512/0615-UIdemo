@@ -17,7 +17,7 @@ const ThinkingArea: React.FC<ThinkingAreaProps> = ({
   mockThinkingSteps
 }) => {
   return (
-    <div className="w-96 bg-gradient-to-b from-purple-50 to-purple-100 border-l border-purple-200 flex flex-col">
+    <div className="flex-1 bg-white border-2 border-gray-300 rounded-2xl flex flex-col m-4 shadow-lg">
       <ThinkingHeader />
       
       <ThinkingContent 

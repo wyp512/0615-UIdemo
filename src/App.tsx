@@ -137,31 +137,27 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="container mx-auto p-4">
-        <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
-          <div className="h-screen flex">
-            {/* 左侧聊天区域 */}
-            <ChatArea 
-              messages={messages}
-              isTyping={isTyping}
-              inputValue={inputValue}
-              setInputValue={setInputValue}
-              handleSendMessage={handleSendMessage}
-              handleKeyPress={handleKeyDown}
-              formatTime={formatTime}
-              messagesEndRef={messagesEndRef}
-            />
+    <div className="min-h-screen bg-gray-100">
+      <div className="h-screen flex">
+        {/* 左侧聊天区域 - 占一半宽度 */}
+        <ChatArea 
+          messages={messages}
+          isTyping={isTyping}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          handleSendMessage={handleSendMessage}
+          handleKeyPress={handleKeyDown}
+          formatTime={formatTime}
+          messagesEndRef={messagesEndRef}
+        />
 
-            {/* 右侧思考过程区域 */}
-            <ThinkingArea 
-              currentThinking={currentThinking}
-              messages={messages}
-              formatTime={formatTime}
-              mockThinkingSteps={mockThinkingSteps}
-            />
-          </div>
-        </div>
+        {/* 右侧思考过程区域 - 占一半宽度 */}
+        <ThinkingArea 
+          currentThinking={currentThinking}
+          messages={messages}
+          formatTime={formatTime}
+          mockThinkingSteps={mockThinkingSteps}
+        />
       </div>
     </div>
   );
