@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ChatArea from './components/ChatArea';
+import ThinkingArea from './components/ThinkingArea';
+import type { Message } from './types';
 
 // 模拟聊天数据
 const mockChatMessages = [
@@ -51,8 +54,17 @@ const mockThinkingSteps = [
   '验证回答完整性'
 ];
 
+// 定义消息类型
+// export interface Message {
+//   id: number;
+//   type: 'user' | 'assistant';
+//   content: string;
+//   timestamp: Date;
+//   thinking?: string[];
+// }
+
 const App: React.FC = () => {
-  const [messages, setMessages] = useState(mockChatMessages);
+  const [messages, setMessages] = useState<Message[]>(mockChatMessages);
   const [inputValue, setInputValue] = useState('');
   const [currentThinking, setCurrentThinking] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -117,7 +129,7 @@ const App: React.FC = () => {
     setCurrentThinking([]);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
@@ -126,174 +138,28 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* 测试Tailwind样式 */}
       <div className="container mx-auto p-4">
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
           <div className="h-screen flex">
             {/* 左侧聊天区域 */}
-            <div className="flex-1 flex flex-col bg-white">
-              {/* 聊天头部 */}
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 shadow-lg">
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white font-bold text-xl mr-4">
-                    A
-                  </div>
-                  <div className="flex-1">
-                    <h1 className="text-2xl font-bold">atypica.AI</h1>
-                    <p className="text-blue-100 text-sm">AI智能助手</p>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-3 h-3 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                    <span className="text-blue-100 text-sm">在线</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 聊天消息区域 */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className={`max-w-2xl rounded-2xl p-4 shadow-md transform transition-all duration-300 hover:scale-105 ${
-                      message.type === 'user' 
-                        ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white ml-auto' 
-                        : 'bg-white border border-gray-200 text-gray-800'
-                    }`}>
-                      <div className="whitespace-pre-wrap break-words leading-relaxed">
-                        {message.content}
-                      </div>
-                      <div className={`text-xs mt-3 ${
-                        message.type === 'user' ? 'text-blue-100' : 'text-gray-400'
-                      }`}>
-                        {formatTime(message.timestamp)}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                {isTyping && (
-                  <div className="flex justify-start">
-                    <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-md">
-                      <div className="flex items-center space-x-2">
-                        <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                        </div>
-                        <span className="text-sm text-gray-500 ml-2">AI正在思考...</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* 输入区域 */}
-              <div className="bg-white border-t border-gray-200 p-6">
-                <div className="flex items-end space-x-4">
-                  <div className="flex-1">
-                    <textarea
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder="输入您的问题..."
-                      className="w-full resize-none border-2 border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      rows={1}
-                      style={{ minHeight: '48px', maxHeight: '120px' }}
-                    />
-                  </div>
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={!inputValue.trim() || isTyping}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-gray-300 disabled:to-gray-400 text-white px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg disabled:transform-none disabled:shadow-none font-medium"
-                  >
-                    发送
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ChatArea 
+              messages={messages}
+              isTyping={isTyping}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+              handleSendMessage={handleSendMessage}
+              handleKeyPress={handleKeyDown}
+              formatTime={formatTime}
+              messagesEndRef={messagesEndRef}
+            />
 
             {/* 右侧思考过程区域 */}
-            <div className="w-96 bg-gradient-to-b from-purple-50 to-purple-100 border-l border-purple-200 flex flex-col">
-              {/* 思考过程头部 */}
-              <div className="p-6 border-b border-purple-200 bg-gradient-to-r from-purple-500 to-purple-600 text-white">
-                <h2 className="text-xl font-bold flex items-center">
-                  <div className="w-3 h-3 bg-white rounded-full mr-3 animate-pulse"></div>
-                  思考过程
-                </h2>
-                <p className="text-purple-100 text-sm mt-1">AI的推理过程实时展示</p>
-              </div>
-
-              {/* 思考内容区域 */}
-              <div className="flex-1 overflow-y-auto p-6">
-                {currentThinking.length > 0 ? (
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-purple-800 mb-4">当前思考步骤:</h3>
-                    {currentThinking.map((step, index) => (
-                      <div key={index} className="flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm transform transition-all duration-300 hover:shadow-md">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-sm text-gray-700 leading-relaxed">{step}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    <h3 className="text-lg font-semibold text-purple-800">最近的思考过程:</h3>
-                    {messages
-                      .filter(msg => msg.type === 'assistant' && msg.thinking)
-                      .slice(-1)
-                      .map((message) => (
-                        <div key={message.id} className="space-y-3">
-                          <div className="text-xs text-purple-400 mb-3 font-medium">
-                            {formatTime(message.timestamp)}
-                          </div>
-                          {message.thinking?.map((step, index) => (
-                            <div key={index} className="flex items-start space-x-3 p-3 bg-white rounded-lg shadow-sm">
-                              <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                              <span className="text-sm text-gray-700 leading-relaxed">{step}</span>
-                            </div>
-                          ))}
-                        </div>
-                      ))
-                    }
-                    
-                    <div className="mt-8 p-4 bg-white rounded-xl shadow-sm border border-purple-200">
-                      <h4 className="text-sm font-semibold text-purple-800 mb-3">思考流程模板:</h4>
-                      <div className="space-y-2">
-                        {mockThinkingSteps.map((step, index) => (
-                          <div key={index} className="text-xs text-gray-600 flex items-center">
-                            <span className="w-5 h-5 bg-purple-500 text-white rounded-full text-xs flex items-center justify-center mr-3 font-bold">
-                              {index + 1}
-                            </span>
-                            <span>{step}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* 统计信息 */}
-              <div className="p-6 border-t border-purple-200 bg-white">
-                <div className="text-sm text-gray-600 space-y-3">
-                  <div className="flex justify-between items-center p-2 bg-purple-50 rounded-lg">
-                    <span>对话轮次:</span>
-                    <span className="font-bold text-purple-600">{Math.floor(messages.length / 2)}</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-purple-50 rounded-lg">
-                    <span>平均响应时间:</span>
-                    <span className="font-bold text-purple-600">2.3秒</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-purple-50 rounded-lg">
-                    <span>思考深度:</span>
-                    <span className="font-bold text-purple-600">5层</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ThinkingArea 
+              currentThinking={currentThinking}
+              messages={messages}
+              formatTime={formatTime}
+              mockThinkingSteps={mockThinkingSteps}
+            />
           </div>
         </div>
       </div>

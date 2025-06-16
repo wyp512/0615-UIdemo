@@ -20,7 +20,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    
+    /* Type Declarations */
+    "typeRoots": ["./node_modules/@types", "./src/types", "./src"]
   },
-  "include": ["src"]
+  "include": ["src", "src/**/*.d.ts", "src/components.d.ts", "src/global.d.ts"]
 }
