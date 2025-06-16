@@ -4,46 +4,7 @@ import ThinkingArea from './components/ThinkingArea';
 import type { Message } from './types';
 
 // 模拟聊天数据
-const mockChatMessages = [
-  {
-    id: 1,
-    type: 'user' as const,
-    content: '你好，请帮我解释一下React的useState钩子',
-    timestamp: new Date(Date.now() - 300000)
-  },
-  {
-    id: 2,
-    type: 'assistant' as const,
-    content: 'useState是React中最基础的Hook之一，它让你在函数组件中添加状态。当状态改变时，组件会重新渲染。',
-    timestamp: new Date(Date.now() - 280000),
-    thinking: [
-      '用户询问useState钩子',
-      '这是React基础概念',
-      '需要简洁明了地解释',
-      '可以提供示例代码',
-      '说明状态更新机制'
-    ]
-  },
-  {
-    id: 3,
-    type: 'user' as const,
-    content: '能给个具体的例子吗？',
-    timestamp: new Date(Date.now() - 180000)
-  },
-  {
-    id: 4,
-    type: 'assistant' as const,
-    content: '当然！这里是一个简单的计数器例子：\n\n```javascript\nconst [count, setCount] = useState(0);\n\nreturn (\n  <button onClick={() => setCount(count + 1)}>\n    点击次数: {count}\n  </button>\n);\n```',
-    timestamp: new Date(Date.now() - 120000),
-    thinking: [
-      '用户要求具体例子',
-      '计数器是最经典的useState示例',
-      '展示解构赋值语法',
-      '说明setter函数的使用',
-      '包含JSX中的状态显示'
-    ]
-  }
-];
+const mockChatMessages: Message[] = [];
 
 const mockThinkingSteps = [
   '分析用户问题类型',

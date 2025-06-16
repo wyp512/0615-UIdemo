@@ -17,7 +17,7 @@ const ThinkingArea: React.FC<ThinkingAreaProps> = ({
   mockThinkingSteps
 }) => {
   return (
-    <div className="flex-1 bg-white border-2 border-gray-300 rounded-2xl flex flex-col m-4 shadow-lg">
+    <div className="flex-1 bg-white border border-gray-300 rounded-lg flex flex-col m-4 shadow-sm">
       <ThinkingHeader />
       
       <ThinkingContent 
