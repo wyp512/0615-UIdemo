@@ -12,9 +12,9 @@ interface CodeExecutionBlockProps {
 }
 
 const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
-  message,
+  message: _message,
   userMessage,
-  formatTime,
+  formatTime: _formatTime,
   variant = 'chat',
   contentType = 'default',
   onCodeBlockView,

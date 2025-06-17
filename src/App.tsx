@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ChatArea from './components/ChatArea';
 import ThinkingArea from './components/ThinkingArea';
+import Sidebar from './components/Sidebar';
 import type { Message } from './types';
 
 // 模拟聊天数据
@@ -30,6 +31,7 @@ const App: React.FC = () => {
   const [currentThinking, setCurrentThinking] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [selectedCodeBlock, setSelectedCodeBlock] = useState<string | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -102,8 +104,19 @@ const App: React.FC = () => {
     setSelectedCodeBlock(blockType);
   };
 
+  const handleOpenSidebar = () => {
+    setIsSidebarOpen(true);
+  };
+
+  const handleCloseSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      {/* 侧边栏 */}
+      <Sidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
+      
       <div className="h-screen flex">
         {/* 左侧聊天区域 - 占一半宽度 */}
         <ChatArea 
@@ -116,6 +129,7 @@ const App: React.FC = () => {
           formatTime={formatTime}
           messagesEndRef={messagesEndRef}
           onCodeBlockView={handleCodeBlockView}
+          onOpenSidebar={handleOpenSidebar}
         />
 
         {/* 右侧思考过程区域 - 占一半宽度 */}

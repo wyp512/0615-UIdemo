@@ -14,10 +14,10 @@ const ThinkingContent: React.FC<ThinkingContentProps> = ({
   currentThinking,
   messages,
   formatTime,
-  mockThinkingSteps,
+  mockThinkingSteps: _mockThinkingSteps,
   selectedCodeBlock
 }) => {
-  const [isExecExpanded, setIsExecExpanded] = useState<boolean>(true);
+  const [isExecExpanded, setIsExecExpanded] = useState<boolean>(false);
 
   const toggleExecSection = () => {
     setIsExecExpanded(prev => !prev);

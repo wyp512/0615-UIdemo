@@ -1,54 +1,31 @@
-# React + TypeScript + Vite
+# AI智能体 Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+本项目是一个现代化的AI智能体演示平台，基于 **React + TypeScript + Vite** 构建，采用 **Tailwind CSS** 进行界面设计，具备专业的产品研发咨询对话体验。
 
-Currently, two official plugins are available:
+## 项目简介
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 支持左右分栏的聊天与AI思考过程展示
+- 聊天区域支持消息发送、代码执行块、选项卡交互等
+- 右侧区域模拟AI控制台，展示结构化思考与执行日志
+- 集成侧边栏历史记录功能，便于管理和回溯会话
+- 采用响应式设计，适配不同屏幕尺寸
+- 代码结构清晰，易于扩展和维护
 
-## Expanding the ESLint configuration
+## 技术栈
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React 18 + TypeScript**：组件化开发，类型安全
+- **Vite**：极速开发与构建体验
+- **Tailwind CSS**：高效的原子化样式方案
+- **ESLint**：代码规范与质量保障
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 快速开始
+
+```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+访问 http://localhost:5173/ （或终端提示的端口）即可体验项目。

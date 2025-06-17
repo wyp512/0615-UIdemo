@@ -14,6 +14,7 @@ interface ChatAreaProps {
   formatTime: (date: Date) => string;
   messagesEndRef: React.RefObject<HTMLDivElement>;
   onCodeBlockView: (blockType: string) => void;
+  onOpenSidebar: () => void;
 }
 
 const ChatArea: React.FC<ChatAreaProps> = ({
@@ -25,11 +26,12 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   handleKeyPress,
   formatTime,
   messagesEndRef,
-  onCodeBlockView
+  onCodeBlockView,
+  onOpenSidebar
 }) => {
   return (
     <div className="flex-1 flex flex-col bg-white">
-      <ChatHeader />
+      <ChatHeader onOpenSidebar={onOpenSidebar} />
       
       <MessageList 
         messages={messages}
