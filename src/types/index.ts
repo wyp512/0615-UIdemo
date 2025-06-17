@@ -5,4 +5,12 @@ export interface Message {
   content: string;
   timestamp: Date;
   thinking?: string[];
+}
+
+// 定义历史记录类型
+export interface HistoryRecord {
+  id: number;
+  title: string;
+  messages: Message[];
+  timestamp: Date;
 } 

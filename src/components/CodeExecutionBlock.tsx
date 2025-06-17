@@ -24,7 +24,30 @@ const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
 
   // 根据内容类型生成不同的执行数据
   const getExecutionData = () => {
-    if (contentType === 'consumer') {
+    // 根据blockId优先判断护肤研究的特殊内容
+    if (blockId === 'skincare-market') {
+      return {
+        question: '您对东南亚美妆市场的哪个方面最感兴趣？',
+        options: ["消费者购买决策因素", "主流美妆品类偏好", "线上vs线下购物渠道偏好", "本土vs国际品牌偏好"],
+        answer: ["主流美妆品类偏好"],
+        message: ["主流美妆品类偏好"]
+      };
+    } else if (blockId === 'skincare-product') {
+      return {
+        question: '您希望重点了解哪类美妆产品的消费者偏好？',
+        options: ["护肤类产品", "彩妆类产品", "香水和身体护理类", "所有美妆品类的整体偏好"],
+        answer: ["护肤类产品"],
+        message: ["护肤类产品"]
+      };
+    } else if (blockId === 'message-6') {
+      // 第二个历史记录的第二个AI消息
+      return {
+        question: '您希望重点了解哪类美妆产品的消费者偏好？',
+        options: ["护肤类产品", "彩妆类产品", "香水和身体护理类", "所有美妆品类的整体偏好"],
+        answer: ["护肤类产品"],
+        message: ["护肤类产品"]
+      };
+    } else if (contentType === 'consumer') {
       return {
         question: '您的目标消费者主要是哪类人群？',
         options: ["追求新鲜风味的尝鲜一族", "注重健康但不想放弃品质的消费者", "忙碌白领寻找高效能量来源", "喜欢尝试独特风味的咖啡爱好者"],
