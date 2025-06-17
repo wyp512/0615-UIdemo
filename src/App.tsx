@@ -252,13 +252,14 @@ const App: React.FC = () => {
           onOpenSidebar={handleOpenSidebar}
         />
 
-        {/* 右侧思考过程区域 - 占一半宽度 */}
+        {/* 右侧思考过程区域 - 框架一直显示，内容根据消息情况显示 */}
         <ThinkingArea 
           currentThinking={currentThinking}
           messages={messages}
           formatTime={formatTime}
           mockThinkingSteps={mockThinkingSteps}
           selectedCodeBlock={selectedCodeBlock}
+          showContent={messages.length > 0}
         />
       </div>
     </div>

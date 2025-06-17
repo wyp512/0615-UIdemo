@@ -9,6 +9,7 @@ interface ThinkingAreaProps {
   formatTime: (date: Date) => string;
   mockThinkingSteps: string[];
   selectedCodeBlock: string | null;
+  showContent?: boolean;
 }
 
 const ThinkingArea: React.FC<ThinkingAreaProps> = ({
@@ -16,19 +17,24 @@ const ThinkingArea: React.FC<ThinkingAreaProps> = ({
   messages,
   formatTime,
   mockThinkingSteps,
-  selectedCodeBlock
+  selectedCodeBlock,
+  showContent = true
 }) => {
   return (
     <div className="flex-1 bg-gray-50 border border-gray-300 rounded-2xl flex flex-col m-4 shadow-lg">
       <ThinkingHeader />
       
-      <ThinkingContent 
-        currentThinking={currentThinking}
-        messages={messages}
-        formatTime={formatTime}
-        mockThinkingSteps={mockThinkingSteps}
-        selectedCodeBlock={selectedCodeBlock}
-      />
+      {showContent ? (
+        <ThinkingContent 
+          currentThinking={currentThinking}
+          messages={messages}
+          formatTime={formatTime}
+          mockThinkingSteps={mockThinkingSteps}
+          selectedCodeBlock={selectedCodeBlock}
+        />
+      ) : (
+        <div className="flex-1"></div>
+      )}
     </div>
   );
 };
