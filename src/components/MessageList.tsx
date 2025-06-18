@@ -20,7 +20,7 @@ const MessageList: React.FC<MessageListProps> = ({
 }) => {
   const renderUserMessage = (message: Message) => (
     <div className="mb-4">
-      <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 shadow-sm">
         <div className="text-gray-800 text-sm leading-relaxed">
           {message.content}
         </div>
@@ -29,9 +29,6 @@ const MessageList: React.FC<MessageListProps> = ({
   );
 
   const renderAssistantMessage = (message: Message) => {
-    // 检查是否是第一个历史记录的咖啡相关消息（通过 ID 和内容判断）
-    const isCoffeeResearchMessage = message.id === 2 && message.content.includes('您好！我很乐意帮助您进行咖啡新品风味的用户研究');
-    
     return (
       <div className="mb-6">
         <div className="text-gray-800 text-sm leading-relaxed mb-4">
@@ -137,6 +134,84 @@ const MessageList: React.FC<MessageListProps> = ({
     </div>
   );
 
+  const renderBeautyPreferenceMessage = (message: Message) => {
+    return (
+      <div className="mb-6">
+        <div className="text-gray-800 text-sm leading-relaxed mb-4">
+          {message.content}
+        </div>
+        
+        {/* 为AI消息添加代码执行块 */}
+        <CodeExecutionBlock
+          message={message}
+          userMessage={messages.find(m => m.type === 'user' && m.id < message.id)}
+          formatTime={formatTime}
+          variant="chat"
+          onCodeBlockView={onCodeBlockView}
+          blockId={`message-${message.id}`}
+        />
+        
+        {/* 添加美妆产品消费者偏好选项卡 */}
+        <OptionTabs
+          title="您希望重点了解哪类美妆产品的消费者偏好？"
+          options={[
+            "护肤类产品",
+            "彩妆类产品", 
+            "香水和身体护理类",
+            "所有美妆品类的整体偏好"
+          ]}
+          onOptionSelect={(option) => {
+            console.log('选择了美妆产品类型:', option);
+          }}
+        />
+        
+        {/* 添加衔接文字 */}
+        <div className="text-gray-800 text-sm leading-relaxed mb-4">
+          非常好！最后一个问题，这将帮助我们更精准地定位调研范围：
+        </div>
+        
+        {/* 添加地理范围调研代码执行块 */}
+        <CodeExecutionBlock
+          message={message}
+          userMessage={messages.find(m => m.type === 'user' && m.id < message.id)}
+          formatTime={formatTime}
+          variant="chat"
+          onCodeBlockView={onCodeBlockView}
+          blockId="geographic-scope"
+        />
+        
+        {/* 添加地理或人口范围选项卡 */}
+        <OptionTabs
+          title="您希望调研的地理或人口范围是？"
+          options={[
+            "整个东南亚地区",
+            "特定国家(如泰国、新加坡、印尼等)",
+            "城市vs乡村市场对比",
+            "不同年龄层的偏好对比"
+          ]}
+          onOptionSelect={(option) => {
+            console.log('选择了调研范围:', option);
+          }}
+        />
+        
+        {/* 添加结尾感谢文字 */}
+        <div className="text-gray-800 text-sm leading-relaxed mb-4">
+          感谢您的回答！根据您的选择，我将为您调研整个东南亚地区的护肤类产品消费者画像和偏好。
+        </div>
+        
+        {/* 添加分析师分配代码执行块 */}
+        <CodeExecutionBlock
+          message={message}
+          userMessage={messages.find(m => m.type === 'user' && m.id < message.id)}
+          formatTime={formatTime}
+          variant="chat"
+          onCodeBlockView={onCodeBlockView}
+          blockId="analyst-assignment"
+        />
+      </div>
+    );
+  };
+
   return (
     <div className="flex-1 overflow-y-auto p-4 bg-white">
       {/* 只渲染传入的消息列表 */}
@@ -151,6 +226,9 @@ const MessageList: React.FC<MessageListProps> = ({
             // 检查是否是护肤研究的第一个消息
             message.id === 4 && message.content.includes('您好！我很乐意帮您调研东南亚地区的美妆消费者画像和偏好') ?
               renderSkincareResearchMessage(message) :
+            // 检查是否是护肤研究的第二个消息（id为6）
+            message.id === 6 && message.content.includes('感谢您的选择！了解到您对东南亚美妆市场的主流美妆品类偏好特别感兴趣') ?
+              renderBeautyPreferenceMessage(message) :
               renderRegularAssistantMessage(message)
           )}
         </div>
@@ -173,7 +251,7 @@ const MessageList: React.FC<MessageListProps> = ({
       
       {isTyping && (
         <div className="flex justify-start">
-          <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 shadow-sm">
             <div className="flex items-center space-x-2">
               <div className="flex space-x-1">
                 <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>

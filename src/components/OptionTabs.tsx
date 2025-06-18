@@ -30,7 +30,7 @@ const OptionTabs: React.FC<OptionTabsProps> = ({
   };
 
   return (
-    <div className="bg-gray-100 border border-gray-200 rounded-lg p-4 mb-4">
+    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
       {/* 标题 */}
       <div className="text-gray-800 text-sm font-medium mb-3">
         {title}
@@ -44,8 +44,8 @@ const OptionTabs: React.FC<OptionTabsProps> = ({
             onClick={() => handleOptionClick(option)}
             className={`px-4 py-2 rounded-full text-sm transition-all duration-200 border text-left ${
               selectedOptions.includes(option)
-                ? 'bg-blue-50 border-blue-300 text-blue-700'
-                : 'bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100'
+                ? 'bg-blue-50 border-blue-200 text-blue-700'
+                : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
             }`}
           >
             {option}

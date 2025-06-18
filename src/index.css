@@ -176,3 +176,12 @@ code {
   font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 0.875em;
 }
+
+/* 统一的 exec requestInteraction 样式 */
+.exec-request-interaction {
+  color: #2563eb; /* blue-600 */
+  font-weight: 600; /* font-semibold */
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+}

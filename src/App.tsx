@@ -139,6 +139,8 @@ const App: React.FC = () => {
       setMessages(record.messages);
       setCurrentHistoryId(recordId);
       setIsSidebarOpen(false);
+      // 清空之前选中的代码块，确保控制台显示正确的内容
+      setSelectedCodeBlock(null);
     }
   };
 

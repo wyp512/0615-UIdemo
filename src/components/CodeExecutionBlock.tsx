@@ -32,6 +32,30 @@ const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
         answer: ["主流美妆品类偏好"],
         message: ["主流美妆品类偏好"]
       };
+    } else if (blockId === 'geographic-scope') {
+      return {
+        question: '您希望调研的地理或人口范围是？',
+        options: ["整个东南亚地区", "特定国家(如泰国、新加坡、印尼等)", "城市vs乡村市场对比", "不同年龄层的偏好对比"],
+        answer: ["整个东南亚地区"],
+        message: ["整个东南亚地区"]
+      };
+    } else if (blockId === 'analyst-assignment') {
+      return {
+        question: '',
+        options: [],
+        answer: [],
+        message: [],
+        specialFormat: {
+          args: {
+            role: "美妆市场研究专家",
+            topic: "东南亚地区护肤类产品消费者画像与偏好研究"
+          },
+          result: {
+            analystId: "7672"
+          },
+          message: '{"analystId":7672,"role":"美妆市场研究专家","topic":"东南亚地区护肤类产品消费者画像与偏好研究"}'
+        }
+      };
     } else if (blockId === 'skincare-product') {
       return {
         question: '您希望重点了解哪类美妆产品的消费者偏好？',
@@ -95,7 +119,7 @@ const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
   // 聊天区域样式
   if (variant === 'chat') {
     return (
-      <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4 relative">
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4 relative">
         {/* 右上角的查看过程按钮 */}
         <div 
           className="absolute top-3 right-3 flex items-center space-x-1 text-gray-500 text-xs cursor-pointer hover:text-gray-700"
@@ -108,65 +132,94 @@ const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
         </div>
         
         <div 
-          className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded mb-2"
+          className="flex items-center space-x-2 cursor-pointer p-2 rounded mb-2"
           onClick={toggleExpanded}
         >
-          <span className="text-gray-500 text-xs">
-            {isExpanded ? '⯆' : '⯈'}
-          </span>
-          <span className="text-blue-600 font-semibold">exec requestInteraction</span>
+                      <span className="text-gray-500 text-xs">
+              {isExpanded ? '∨' : '>_'}
+            </span>
+          <span className="exec-request-interaction">exec requestInteraction</span>
         </div>
         
         {isExpanded && (
           <>
-            {/* 参数部分 */}
-            <div className="mb-3">
-              <div className="text-xs text-gray-600 mb-1">▶ args</div>
-              <div className="bg-white border border-gray-200 rounded p-2 text-xs text-gray-700">
-                <span className="text-blue-600">options:</span> [
-                {executionData.options.map((option, index) => (
-                  <span key={index} className="text-green-600">
-                    "{option}"{index < executionData.options.length - 1 ? ', ' : ''}
-                  </span>
-                ))}
-                ]
-              </div>
-            </div>
-            
-            <div className="mb-3">
-              <div className="text-xs text-gray-600 mb-1">▶ question:</div>
-              <div className="bg-white border border-gray-200 rounded p-2 text-xs text-gray-700">
-                <span className="text-green-600">"{executionData.question}"</span>
-              </div>
-            </div>
-            
-            {/* 结果部分 */}
-            <div className="mb-3">
-              <div className="text-xs text-gray-600 mb-1">▶ result</div>
-              <div className="bg-white border border-gray-200 rounded p-2 text-xs text-gray-700">
-                <span className="text-blue-600">answer:</span> [
-                {executionData.answer.map((answer, index) => (
-                  <span key={index} className="text-green-600">
-                    "{answer}"{index < executionData.answer.length - 1 ? ', ' : ''}
-                  </span>
-                ))}
-                ]
-              </div>
-            </div>
-            
-            {/* 消息部分 */}
-            <div>
-              <div className="text-xs text-gray-600 mb-1">▶ message</div>
-              <div className="bg-white border border-gray-200 rounded p-2 text-xs text-gray-700">
-                [
-                {executionData.message.map((msg, index) => (
-                  <span key={index} className="text-green-600">
-                    "{msg}"{index < executionData.message.length - 1 ? ', ' : ''}
-                  </span>
-                ))}
-                ]
-              </div>
-            </div>
+            {executionData.specialFormat ? (
+              <>
+                {/* 分析师分配特殊格式 */}
+                <div className="mb-3">
+                  <div className="text-xs text-gray-600 mb-1">{'>'}_  args</div>
+                  <div className="text-xs text-gray-700 pl-2">
+                    <div><span className="text-blue-600">role:</span> <span className="text-green-600">{executionData.specialFormat.args.role}</span></div>
+                    <div><span className="text-blue-600">topic:</span> <span className="text-green-600">{executionData.specialFormat.args.topic}</span></div>
+                  </div>
+                </div>
+                
+                <div className="mb-3">
+                  <div className="text-xs text-gray-600 mb-1">{'>'}_  result</div>
+                  <div className="text-xs text-gray-700 pl-2">
+                    <div><span className="text-blue-600">analystId:</span> <span className="text-green-600">{executionData.specialFormat.result.analystId}</span></div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div className="text-xs text-gray-600 mb-1">{'>'}_  message</div>
+                  <div className="text-xs text-gray-700 pl-2">
+                    <span className="text-green-600">{executionData.specialFormat.message}</span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* 参数部分 */}
+                <div className="mb-3">
+                  <div className="text-xs text-gray-600 mb-1">{'>'}_  args</div>
+                  <div className="text-xs text-gray-700">
+                    <span className="text-blue-600">options:</span> [
+                    {executionData.options.map((option, index) => (
+                      <span key={index} className="text-green-600">
+                        "{option}"{index < executionData.options.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                    ]
+                  </div>
+                </div>
+                
+                <div className="mb-3">
+                  <div className="text-xs text-gray-600 mb-1">{'>'}_  question:</div>
+                  <div className="text-xs text-gray-700">
+                    <span className="text-green-600">"{executionData.question}"</span>
+                  </div>
+                </div>
+                
+                {/* 结果部分 */}
+                <div className="mb-3">
+                  <div className="text-xs text-gray-600 mb-1">{'>'}_  result</div>
+                  <div className="text-xs text-gray-700">
+                    <span className="text-blue-600">answer:</span> [
+                    {executionData.answer.map((answer, index) => (
+                      <span key={index} className="text-green-600">
+                        "{answer}"{index < executionData.answer.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                    ]
+                  </div>
+                </div>
+                
+                {/* 消息部分 */}
+                <div>
+                  <div className="text-xs text-gray-600 mb-1">{'>'}_  message</div>
+                  <div className="text-xs text-gray-700">
+                    [
+                    {executionData.message.map((msg, index) => (
+                      <span key={index} className="text-green-600">
+                        "{msg}"{index < executionData.message.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                    ]
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
@@ -176,74 +229,112 @@ const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
   // 控制台样式
   return (
     <div className="pl-4 space-y-3 bg-white rounded-lg p-3 border border-gray-200">
-      {/* args 部分 */}
-      <div>
-        <div className="flex items-center space-x-2 mb-2">
-          <span className="text-gray-500 text-xs">⯈</span>
-          <span className="text-gray-700 font-medium">args</span>
-        </div>
-        <div className="pl-4 space-y-2 text-xs">
+      {executionData.specialFormat ? (
+        <>
+          {/* 分析师分配控制台特殊格式 */}
           <div>
-            <span className="text-blue-600">options</span>
-            <span className="text-gray-600">: [</span>
+            <div className="flex items-center space-x-2 mb-2">
+              <span className="text-gray-500 text-xs">{'>'}_</span>
+              <span className="text-gray-700 font-medium">args</span>
+            </div>
+            <div className="pl-4 text-xs">
+              <div><span className="text-blue-600">role:</span> <span className="text-green-600">{executionData.specialFormat.args.role}</span></div>
+              <div><span className="text-blue-600">topic:</span> <span className="text-green-600">{executionData.specialFormat.args.topic}</span></div>
+            </div>
           </div>
-          <div className="pl-4">
-            {executionData.options.map((option, index) => (
-              <div key={index} className="text-green-600">
-                "{option}"{index < executionData.options.length - 1 ? ',' : ''}
-              </div>
-            ))}
-          </div>
-          <div className="text-gray-600">]</div>
-          
-          <div className="pt-2">
-            <span className="text-blue-600">question</span>
-            <span className="text-gray-600">: </span>
-            <span className="text-green-600">"{executionData.question}"</span>
-          </div>
-        </div>
-      </div>
 
-      {/* result 部分 */}
-      <div>
-        <div className="flex items-center space-x-2 mb-2">
-          <span className="text-gray-500 text-xs">⯈</span>
-          <span className="text-gray-700 font-medium">result</span>
-        </div>
-        <div className="pl-4 text-xs">
           <div>
-            <span className="text-blue-600">answer</span>
-            <span className="text-gray-600">: [</span>
+            <div className="flex items-center space-x-2 mb-2">
+              <span className="text-gray-500 text-xs">{'>'}_</span>
+              <span className="text-gray-700 font-medium">result</span>
+            </div>
+            <div className="pl-4 text-xs">
+              <div><span className="text-blue-600">analystId:</span> <span className="text-green-600">{executionData.specialFormat.result.analystId}</span></div>
+            </div>
           </div>
-          <div className="pl-4">
-            {executionData.answer.map((answer, index) => (
-              <div key={index} className="text-green-600">
-                "{answer}"{index < executionData.answer.length - 1 ? ',' : ''}
-              </div>
-            ))}
-          </div>
-          <div className="text-gray-600">]</div>
-        </div>
-      </div>
 
-      {/* message 部分 */}
-      <div>
-        <div className="flex items-center space-x-2 mb-2">
-          <span className="text-gray-500 text-xs">⯈</span>
-          <span className="text-gray-700 font-medium">message</span>
-        </div>
-        <div className="pl-4 text-xs">
-          <div className="text-gray-600">[</div>
-          <div className="pl-4">
-            {executionData.message.map((msg, index) => (
-              <div key={index} className="text-green-600">
-                "{msg}"{index < executionData.message.length - 1 ? ',' : ''}
-              </div>
-            ))}
+          <div>
+            <div className="flex items-center space-x-2 mb-2">
+              <span className="text-gray-500 text-xs">{'>'}_</span>
+              <span className="text-gray-700 font-medium">message</span>
+            </div>
+            <div className="pl-4 text-xs">
+              <span className="text-green-600">{executionData.specialFormat.message}</span>
+            </div>
           </div>
-          <div className="text-gray-600">]</div>
-        </div>
-      </div>
+        </>
+      ) : (
+        <>
+          {/* args 部分 */}
+          <div>
+            <div className="flex items-center space-x-2 mb-2">
+              <span className="text-gray-500 text-xs">{'>'}_</span>
+              <span className="text-gray-700 font-medium">args</span>
+            </div>
+            <div className="pl-4 space-y-2 text-xs">
+              <div>
+                <span className="text-blue-600">options</span>
+                <span className="text-gray-600">: [</span>
+              </div>
+              <div className="pl-4">
+                {executionData.options.map((option, index) => (
+                  <div key={index} className="text-green-600">
+                    "{option}"{index < executionData.options.length - 1 ? ',' : ''}
+                  </div>
+                ))}
+              </div>
+              <div className="text-gray-600">]</div>
+              
+              <div className="pt-2">
+                <span className="text-blue-600">question</span>
+                <span className="text-gray-600">: </span>
+                <span className="text-green-600">"{executionData.question}"</span>
+              </div>
+            </div>
+          </div>
+
+          {/* result 部分 */}
+          <div>
+            <div className="flex items-center space-x-2 mb-2">
+              <span className="text-gray-500 text-xs">{'>'}_</span>
+              <span className="text-gray-700 font-medium">result</span>
+            </div>
+            <div className="pl-4 text-xs">
+              <div>
+                <span className="text-blue-600">answer</span>
+                <span className="text-gray-600">: [</span>
+              </div>
+              <div className="pl-4">
+                {executionData.answer.map((answer, index) => (
+                  <div key={index} className="text-green-600">
+                    "{answer}"{index < executionData.answer.length - 1 ? ',' : ''}
+                  </div>
+                ))}
+              </div>
+              <div className="text-gray-600">]</div>
+            </div>
+          </div>
+
+          {/* message 部分 */}
+          <div>
+            <div className="flex items-center space-x-2 mb-2">
+              <span className="text-gray-500 text-xs">{'>'}_</span>
+              <span className="text-gray-700 font-medium">message</span>
+            </div>
+            <div className="pl-4 text-xs">
+              <div className="text-gray-600">[</div>
+              <div className="pl-4">
+                {executionData.message.map((msg, index) => (
+                  <div key={index} className="text-green-600">
+                    "{msg}"{index < executionData.message.length - 1 ? ',' : ''}
+                  </div>
+                ))}
+              </div>
+              <div className="text-gray-600">]</div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

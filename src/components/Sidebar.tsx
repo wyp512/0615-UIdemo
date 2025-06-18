@@ -16,22 +16,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   currentHistoryId, 
   onLoadHistory
 }) => {
-  const formatDate = (date: Date) => {
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    if (minutes < 60) {
-      return `${minutes}分钟前`;
-    } else if (hours < 24) {
-      return `${hours}小时前`;
-    } else {
-      return `${days}天前`;
-    }
-  };
-
   return (
     <>
       {/* 背景遮罩 */}
@@ -44,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       
       {/* 侧边栏 */}
       <div className={`
-        fixed top-0 left-0 h-full w-80 bg-white shadow-lg z-50 
+        fixed top-0 left-0 h-full w-60 bg-white shadow-lg z-50 
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
@@ -98,12 +82,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                       `}>
                         {record.title}
                       </h3>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {formatDate(record.timestamp)}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {record.messages.length} 条消息
-                      </p>
                     </div>
                     {currentHistoryId === record.id && (
                       <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-1"></div>
