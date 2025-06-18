@@ -208,6 +208,76 @@ const MessageList: React.FC<MessageListProps> = ({
           onCodeBlockView={onCodeBlockView}
           blockId="analyst-assignment"
         />
+        
+        {/* 添加护肤研究标题 */}
+        <div className="mt-4">
+          <div className="bg-gray-100 border border-gray-200 rounded-lg p-3 shadow-sm">
+            <div className="text-gray-800 text-sm font-medium">
+              📝 东南亚地区护肤类产品消费者画像与偏好研究
+            </div>
+          </div>
+        </div>
+        
+        {/* 添加研究计划概要 */}
+        <div className="mt-4 text-gray-800 text-base leading-relaxed">
+          <div className="mb-4">
+            <div className="font-bold text-lg mb-2">研究计划概要</div>
+            <div className="mb-3">我们将开展东南亚地区护肤类产品消费者画像与偏好研究，以下是工作流程和预期产出：</div>
+          </div>
+          
+          <div className="mb-4">
+            <div className="font-bold mb-2">📋 工作流程</div>
+            <div className="pl-3">
+              <div>1. 收集东南亚护肤市场消费者数据</div>
+              <div>2. 分析消费者画像特征</div>
+              <div>3. 研究护肤产品偏好趋势</div>
+              <div>4. 总结关键发现并生成报告</div>
+            </div>
+          </div>
+          
+          <div className="mb-4">
+            <div className="font-bold mb-2">🔄 关键环节</div>
+            <div className="pl-3">
+              <div>· 消费者人口统计学特征分析</div>
+              <div>· 护肤产品购买行为研究</div>
+              <div>· 品牌偏好与决策因素探索</div>
+              <div>· 区域差异性比较</div>
+            </div>
+          </div>
+          
+          <div className="mb-4">
+            <div className="font-bold mb-2">📊 最终产出</div>
+            <div className="pl-3">
+              <div>· 东南亚护肤消费者画像全景图</div>
+              <div>· 主流护肤产品偏好分析</div>
+              <div>· 市场趋势与机会洞察</div>
+              <div>· actionable建议</div>
+            </div>
+          </div>
+          
+          <div className="mb-4">
+            <div className="font-bold mb-2">⏱️ 预计耗时</div>
+            <div className="pl-3">
+              <div>· 约30分钟完成全部研究与报告生成</div>
+            </div>
+          </div>
+          
+          <div className="mt-4 text-gray-600">
+            现在我将开始收集相关数据，请稍候...
+          </div>
+        </div>
+        
+        {/* 添加消费者画像搜索代码执行块 */}
+        <div className="mt-6">
+          <CodeExecutionBlock
+            message={message}
+            userMessage={messages.find(m => m.type === 'user' && m.id < message.id)}
+            formatTime={formatTime}
+            variant="chat"
+            onCodeBlockView={onCodeBlockView}
+            blockId="persona-search"
+          />
+        </div>
       </div>
     );
   };

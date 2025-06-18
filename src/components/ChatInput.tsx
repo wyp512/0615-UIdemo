@@ -17,7 +17,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 }) => {
   return (
     <div className="bg-white border-t border-gray-200 p-4">
-      <div className="flex items-center space-x-3">
+      <div className="flex items-start space-x-3">
         <div className="flex-1 relative">
           <textarea
             value={inputValue}
@@ -32,7 +32,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <button
           onClick={handleSendMessage}
           disabled={!inputValue.trim() || isTyping}
-          className="flex items-center justify-center w-10 h-10 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-300 text-white rounded-lg transition-all duration-200 disabled:cursor-not-allowed"
+          className="flex items-center justify-center bg-gray-600 hover:bg-gray-700 disabled:bg-gray-300 text-white rounded-lg transition-all duration-200 disabled:cursor-not-allowed"
+          style={{ width: '48px', height: '48px', minHeight: '48px' }}
         >
           <svg 
             className="w-5 h-5" 

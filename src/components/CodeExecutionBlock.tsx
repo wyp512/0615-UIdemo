@@ -56,6 +56,23 @@ const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
           message: '{"analystId":7672,"role":"美妆市场研究专家","topic":"东南亚地区护肤类产品消费者画像与偏好研究"}'
         }
       };
+    } else if (blockId === 'persona-search') {
+      return {
+        question: '',
+        options: [],
+        answer: [],
+        message: [],
+        specialFormat: {
+          args: {
+            description: "帮我寻找东南亚地区护肤产品消费者的画像特征，包括人口统计学特征、消费习惯、产品偏好、品牌偏好等",
+            scoutUserChatToken: "p7XDrzRjTbkfzXEb"
+          },
+          result: {
+            personas: '[{"id":48807,"name":"社交媒体活跃者","tags":["社交分享","美妆达人","护肤心得","种草拔草"]},{"id":48806,"name":"本地品牌支持者","tags":["本地品牌","东南亚制造","平价好物","民族特色"]},{"id":48805,"name":"功效成分探索者","tags":["成分党","功效护肤","问题肌肤","科学护肤"]...显示更多'
+          },
+          message: '5 personas found: [{"id":48807,"name":"社交媒体活跃者","tags":["社交分享","美妆达人","护肤心得","种草拔草"]},{"id":48806,"name":"本地品牌支持者","tags":["本地品牌","东南亚制造","平价好物","民族特色"]},{"id":48805,"name":"功效成分探索者","tags":["成分党","功效护肤","问题肌肤","科学护肤"]},{"id":48804,"name":"美白狂热分子","tags":["美白","白皙肌肤","东南亚美白产品","肤色改善"]},{"id":48803,"name":"小岛漫游者","tags":["旅行护肤","东南亚好物","天然成分","海岛必备"]}]'
+        }
+      };
     } else if (blockId === 'skincare-product') {
       return {
         question: '您希望重点了解哪类美妆产品的消费者偏好？',
@@ -138,26 +155,50 @@ const CodeExecutionBlock: React.FC<CodeExecutionBlockProps> = ({
                       <span className="text-gray-500 text-xs">
               {isExpanded ? '∨' : '>_'}
             </span>
-          <span className="exec-request-interaction">exec requestInteraction</span>
+          <span className="exec-request-interaction">{blockId === 'persona-search' ? 'exec scoutTaskChat' : 'exec requestInteraction'}</span>
         </div>
         
         {isExpanded && (
           <>
             {executionData.specialFormat ? (
               <>
-                {/* 分析师分配特殊格式 */}
+                {/* 特殊格式 */}
                 <div className="mb-3">
                   <div className="text-xs text-gray-600 mb-1">{'>'}_  args</div>
                   <div className="text-xs text-gray-700 pl-2">
-                    <div><span className="text-blue-600">role:</span> <span className="text-green-600">{executionData.specialFormat.args.role}</span></div>
-                    <div><span className="text-blue-600">topic:</span> <span className="text-green-600">{executionData.specialFormat.args.topic}</span></div>
+                    {executionData.specialFormat.args.role && (
+                      <div><span className="text-blue-600">role:</span> <span className="text-green-600">{executionData.specialFormat.args.role}</span></div>
+                    )}
+                    {executionData.specialFormat.args.topic && (
+                      <div><span className="text-blue-600">topic:</span> <span className="text-green-600">{executionData.specialFormat.args.topic}</span></div>
+                    )}
+                    {executionData.specialFormat.args.description && (
+                      <div><span className="text-blue-600">description:</span></div>
+                    )}
+                    {executionData.specialFormat.args.description && (
+                      <div className="pl-2"><span className="text-green-600">{executionData.specialFormat.args.description}</span></div>
+                    )}
+                    {executionData.specialFormat.args.scoutUserChatToken && (
+                      <div><span className="text-blue-600">scoutUserChatToken:</span></div>
+                    )}
+                    {executionData.specialFormat.args.scoutUserChatToken && (
+                      <div className="pl-2"><span className="text-green-600">{executionData.specialFormat.args.scoutUserChatToken}</span></div>
+                    )}
                   </div>
                 </div>
                 
                 <div className="mb-3">
                   <div className="text-xs text-gray-600 mb-1">{'>'}_  result</div>
                   <div className="text-xs text-gray-700 pl-2">
-                    <div><span className="text-blue-600">analystId:</span> <span className="text-green-600">{executionData.specialFormat.result.analystId}</span></div>
+                    {executionData.specialFormat.result.analystId && (
+                      <div><span className="text-blue-600">analystId:</span> <span className="text-green-600">{executionData.specialFormat.result.analystId}</span></div>
+                    )}
+                    {executionData.specialFormat.result.personas && (
+                      <div><span className="text-blue-600">personas:</span></div>
+                    )}
+                    {executionData.specialFormat.result.personas && (
+                      <div className="pl-2"><span className="text-green-600">{executionData.specialFormat.result.personas}</span></div>
+                    )}
                   </div>
                 </div>
                 
